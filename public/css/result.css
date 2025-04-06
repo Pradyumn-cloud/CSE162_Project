@@ -1,0 +1,77 @@
+/* Results page specific styling */
+.results-section {
+    padding: 2rem 0;
+}
+
+.results-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.similarity-meter {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.meter-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: linear-gradient(to right, #4CAF50, #FFC107, #FF5722);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.meter-label {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.text-comparison {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.text-box {
+    flex: 1;
+    min-width: 300px;
+}
+
+.text-content {
+    background: #f5f5f5;
+    padding: 1rem;
+    border-radius: 4px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.analysis-summary {
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.analysis-summary .cta-button {
+    margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+    .text-comparison {
+        flex-direction: column;
+    }
+}

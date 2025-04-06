@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plagio Scan</title>
+    <link rel="stylesheet" href="/css/checker.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header>
+        <nav class="navbar">
+                <a href="/">
+                    <div class="logo" >Plagio Scan</div>
+                </a>
+            
+            <!-- Hamburger Menu for Mobile -->
+            <div class="hamburger">&#9776;</div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <section class="hero">
+            <h1>Plagiarism Checker</h1>
+            <p>Accurate plagiarism detection using the Rabin-Karp algorithm.</p>
+        </section>
+
+        <!-- Plagiarism Check Form -->
+        <section class="form-section">
+            <form action="/checker/compare" method="POST" class="plagiarism-form">  
+                <div class="input-group">
+                    <label for="text1">Text 1:</label>
+                    <textarea id="text1" name="text1" rows="8" required></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="text2">Text 2:</label>
+                    <textarea id="text2" name="text2" rows="8" required></textarea>
+                </div>
+
+                <button type="submit" class="cta-button">Check for Plagiarism</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Plagio Scan. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu -->
+    <script>
+        document.querySelector(".hamburger").addEventListener("click", function () {
+            document.querySelector(".nav-links").classList.toggle("active");
+        });
+        const logoLink = document.querySelector(".logo-link");
+        logoLink.addEventListener("click", (e) => 
+        {
+            navLinks.classList.remove("active");
+        });
+    
+    </script>
+</body>
+</html>

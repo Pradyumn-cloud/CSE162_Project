@@ -1,0 +1,30 @@
+{
+  "name": "plag",
+  "version": "1.0.0",
+  "description": "Our final cse project",
+  "keywords": [
+    "plagiarism"
+  ],
+  "homepage": "https://github.com/Pradyumn-cloud/CSE162_Project#readme",
+  "bugs": {
+    "url": "https://github.com/Pradyumn-cloud/CSE162_Project/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pradyumn-cloud/CSE162_Project.git"
+  },
+  "license": "ISC",
+  "author": "Pradyumn",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "router": "^2.2.0"
+  }
+}

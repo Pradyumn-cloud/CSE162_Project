@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plagiarism Results - Plagio Scan</title>
+    <style>
+        :root {
+            --primary: #6E56CF;
+            --primary-hover: #5746af;
+            --background: #FDFCFD;
+            --text: #1A1523;
+            --text-light: #6F6E77;
+            --border: #E2E0E8;
+            --card-bg: #FFFFFF;
+            --accent: #EDE9FE;
+            --success: #30A46C;
+            --shadow: rgba(0, 0, 0, 0.05);
+            --danger: #E5484D;
+            --warning: #FFB224;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        /* Header and Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            padding: 1rem 0;
+        }
+        
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-button {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: all 0.2s;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+        }
+        
+        .nav-button:hover {
+            background-color: var(--accent);
+            color: var(--primary);
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text);
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        /* Results Section */
+        .results-section {
+            padding: 2rem 0;
+        }
+        
+        .results-section h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, #9782E0 100%);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+        
+        .results-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 6px 18px var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+        
+        /* Similarity Meter */
+        .similarity-meter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .meter-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            background: conic-gradient(var(--primary) 0%, var(--primary) var(--percentage), var(--accent) var(--percentage), var(--accent) 100%);
+            color: var(--text);
+            box-shadow: 0 4px 12px rgba(110, 86, 207, 0.2);
+        }
+        
+        .meter-circle::before {
+            content: '';
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        
+        #similarity-percentage {
+            position: relative;
+            z-index: 2;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+        
+        .meter-label {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        /* Text Comparison */
+        .text-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .text-box {
+            background-color: var(--background);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+        
+        .text-box h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .text-content {
+            line-height: 1.7;
+            font-size: 1rem;
+            color: var(--text);
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        /* Styling the scrollbar */
+        .text-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .text-content::-webkit-scrollbar-track {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+        
+        .text-content::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        /* Analysis Summary */
+        .analysis-summary {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--accent);
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+        
+        .analysis-summary h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            font-size: 1.3rem;
+        }
+        
+        .analysis-summary p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            color: var(--text);
+        }
+        
+        /* CTA Button */
+        .cta-button {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1rem;
+            letter-spacing: 0.2px;
+            box-shadow: 0 4px 12px rgba(110, 86, 207, 0.25);
+        }
+        
+        .cta-button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(110, 86, 207, 0.3);
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border);
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        /* Mobile Responsive Design */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: var(--card-bg);
+                flex-direction: column;
+                align-items: center;
+                padding: 1rem 0;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 12px var(--shadow);
+                z-index: 99;
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .text-comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-section h1 {
+                font-size: 2rem;
+            }
+            
+            .meter-circle {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .meter-circle::before {
+                width: 90px;
+                height: 90px;
+            }
+            
+            #similarity-percentage {
+                font-size: 2rem;
+            }
+            
+            .results-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header>
+        <nav class="navbar">
+            <a href="/" class="logo">Plagio Scan</a>
+            <ul class="nav-links">
+                <li><a href="/" class="nav-button">Home</a></li>
+                <li><a href="/checker" class="nav-button">Check Again</a></li>
+            </ul>
+            <!-- Hamburger Menu for Mobile -->
+            <div class="hamburger">&#9776;</div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <section class="results-section">
+            <h1>Plagiarism Analysis Results</h1>
+            
+            <div class="results-card">
+                <div class="similarity-meter">
+                    <div class="meter-circle">
+                        <span id="similarity-percentage"><%= similarity %>%</span>
+                    </div>
+                    <p class="meter-label">Similarity Score</p>
+                </div>
+                
+                <div class="text-comparison">
+                    <div class="text-box">
+                        <h3>Text 1</h3>
+                        <div class="text-content"><%= text1 %></div>
+                    </div>
+                    
+                    <div class="text-box">
+                        <h3>Text 2</h3>
+                        <div class="text-content"><%= text2 %></div>
+                    </div>
+                </div>
+                
+                <div class="analysis-summary">
+                    <h3>Analysis Summary</h3>
+                    <p><%= message %></p>
+                    <a href="/checker" class="cta-button">Check Another Text</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Plagio Scan. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu and Similarity Meter -->
+    <script>
+        document.querySelector(".hamburger").addEventListener("click", function () {
+            document.querySelector(".nav-links").classList.toggle("active");
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const similarityPercentage = document.getElementById('similarity-percentage');
+            if (similarityPercentage) {
+                const percentage = parseFloat(similarityPercentage.textContent);
+                document.querySelector('.meter-circle').style.setProperty('--percentage', `${percentage}%`);
+                
+                // Set color based on the percentage
+                if (percentage < 30) {
+                    similarityPercentage.style.color = '#30A46C'; // success
+                } else if (percentage < 60) {
+                    similarityPercentage.style.color = '#FFB224'; // warning
+                } else {
+                    similarityPercentage.style.color = '#E5484D'; // danger
+                }
+            }
+        });
+    </script>
+</body>
+</html>
